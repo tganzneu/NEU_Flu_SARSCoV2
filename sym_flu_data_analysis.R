@@ -25,12 +25,13 @@ symflu_plot1 <- ggplot(sym_flu, aes(Date)) +
   geom_area(aes(y = w), size = 0.5, color="black", fill = rgb('0','0.4','1','0.4') ) +
   geom_area(aes(y = v), size = 0.5, color="black", fill = rgb('1','0','0','0.4') ) +
   scale_x_date('', date_breaks = '3 months', date_labels = "%b %Y")+
-  labs(x = "Dates", y = "Total Number of Tests", tag = "A") +
+  labs(x = "Dates", y = "Number of Tests", tag = "A") +
   theme_bw()+
   theme(axis.text.x = element_text(size = 14, hjust = .5, vjust = .5),
         axis.text.y = element_text(size = 14, hjust = .5, vjust = .5),
         axis.title.x = element_text(size = 12, hjust = .5, vjust = .5),
-        axis.title.y = element_text(size = 14, hjust = .5))
+        axis.title.y = element_text(size = 14, hjust = .5),
+        plot.background = element_rect(fill=rgb('0.96','0.94','0.86','0.5')))
   
 symflu_plot1
 #####
@@ -46,13 +47,14 @@ symflu_plot3 <- ggplot(sym_flu_focus, aes(Date)) +
   geom_col(aes(y = w3), color = "black", size = 0, fill = rgb('0','0.4','1','0.4')) +
   geom_col(aes(y = -v3), color = "black", size = 0, fill = rgb('1','0','0','0.4')) +
   scale_y_continuous(labels = abs)+
-  scale_x_date('',date_breaks = '1 months', date_labels = "%b %Y")+
+  scale_x_date('',date_breaks = '1 months', date_labels = "  %b \n %Y")+
   labs( y = "% Positivity Rate", tag = "B") +
   theme_bw() +
   theme(axis.text.x = element_text(size = 12, hjust = .5, vjust = .5),
-        axis.text.y = element_text(size = 12, hjust = .5, vjust = .5),
+        axis.text.y = element_text(size = 14, hjust = .5, vjust = .5, angle = 90),
         axis.title.x = element_text(size = 14, hjust = .5, vjust = .5),
-        axis.title.y = element_text(size = 0, hjust = .5, vjust = .5))+
+        axis.title.y = element_text(size = 0, hjust = .5, vjust = .5),
+        plot.background = element_rect(fill=rgb('0.96','0.94','0.86','0.5')))+
   coord_flip()
   
 symflu_plot3
@@ -96,16 +98,17 @@ sym_flu_focus_cnts$COV_sum <- ww_sum
 sym_flu_focus_cnts$FLU_sum <- vv_sum
 
 cumsum_plot <- ggplot(sym_flu_focus_cnts, aes(Date))+
-  geom_step(aes(y=COV_sum),color = rgb('0','0.4','1','0.4'), size = 2)+
-  geom_step(aes(y=FLU_sum),color = rgb('1','0','0','0.4'), size = 2)+
+  geom_step(aes(y=COV_sum),color = rgb('0','0.4','1','0.8'), size = 2)+
+  geom_step(aes(y=FLU_sum),color = rgb('1','0','0','0.8'), size = 2)+
   scale_x_date('', date_breaks = '3 weeks', date_labels = "%d %b %y",
                limits = as.Date(c('2021-11-01', '2022-02-28')))+
   labs(x = "Dates", y = " Cumulative \n Growth Rate", tag = "C") +
   theme_bw()+
-  theme(axis.text.x = element_text(size = 11, hjust = .7, vjust = 1),
+  theme(axis.text.x = element_text(size = 12, hjust = .7, vjust = 0.2),
         axis.text.y = element_text(size = 12, hjust = .5, vjust = .5),
         axis.title.x = element_text(size = 12, hjust = .5, vjust = .5),
-        axis.title.y = element_text(size = 14, hjust = .5))
+        axis.title.y = element_text(size = 14, hjust = .5),
+        plot.background = element_rect(fill=rgb('0.96','0.94','0.86','0.5')))
 
 cumsum_plot
 # Growth Rates between 27 DEC and 07 JAN - (56-67)
@@ -125,24 +128,24 @@ str(sym_comp)
 View(sym_comp)
 #original plot
 # ifelse to determine color of data in C19
-SGTF <- ifelse(is.na(sym_comp$S),
-               rgb('0.5','0.5','0','0.7'),
-               rgb('0.7','0.7','0.7','0.7'))
-# generate plot
-symcomp_plot1 <- ggplot(sym_comp, aes(Date))+
-  geom_jitter(aes(y=C19, color = I(SGTF), size = 0.5)) +
-  scale_x_date('', date_breaks = '1 month', date_labels = "%b %Y")+
-  scale_y_continuous('Ct value')+
-  labs(tag = "D")+
-  theme_bw() +
-  theme(axis.text.x = element_text(size = 11, hjust = .7, vjust = 1),
-        axis.text.y = element_text(size = 12, hjust = .5, vjust = .5),
-        axis.title.x = element_text(size = 12, hjust = .5, vjust = .5),
-        axis.title.y = element_text(size = 14, hjust = .5))+
-  theme(legend.position = "none")
-
-symcomp_plot1
-#columns
+# SGTF <- ifelse(is.na(sym_comp$S),
+#                rgb('0.5','0.5','0','0.7'),
+#                rgb('0.7','0.7','0.7','0.7'))
+# # generate plot
+# symcomp_plot1 <- ggplot(sym_comp, aes(Date))+
+#   geom_jitter(aes(y=C19, color = I(SGTF), size = 0.5)) +
+#   scale_x_date('', date_breaks = '1 month', date_labels = "%b %Y")+
+#   scale_y_continuous('Ct value')+
+#   labs(tag = "D")+
+#   theme_bw() +
+#   theme(axis.text.x = element_text(size = 12, hjust = .7, vjust = 1),
+#         axis.text.y = element_text(size = 12, hjust = .5, vjust = .5),
+#         axis.title.x = element_text(size = 12, hjust = .5, vjust = .5),
+#         axis.title.y = element_text(size = 14, hjust = .5))+
+#   theme(legend.position = "none")
+# 
+# symcomp_plot1
+#columns / dotpolt
 # new table - grouped by date SGTF = true/false
 SGTF3 <- sym_comp %>% 
   group_by(Date) %>%
@@ -152,30 +155,33 @@ colnames(SGTF3)[2] <- "SGTF"
 View(SGTF3)
 #generate plot
 symcomp_plot2 <- ggplot(SGTF3, aes(x=Date, y=n ))+
-  geom_bar(aes(fill=SGTF), stat='identity',  position = position_dodge(9),
-           width = 4, alpha = 0.7)+
-  scale_fill_manual(values = c(rgb('0.5','0.5','0','0.7'), 'grey'))+
+  geom_point(aes(color=SGTF), stat='identity', shape=20, size = 4.5)+
+  scale_color_manual(values = c(rgb('0','0.4','1','0.8'), rgb('1','0.4','0','0.8')))+
   scale_x_date('', date_breaks = '1 month', date_labels = "%b %Y")+
   scale_y_continuous('Count')+
   labs(tag = "D")+
   theme_bw() +
-  theme(axis.text.x = element_text(size = 11, hjust = .7, vjust = 1),
+  theme(axis.text.x = element_text(size = 12, hjust = .7, vjust = 1),
         axis.text.y = element_text(size = 12, hjust = .5, vjust = .5),
-        axis.title.x = element_text(size = 12, hjust = .5, vjust = .5),
+        axis.title.x = element_text(size = 16, hjust = .5, vjust = .5),
         axis.title.y = element_text(size = 14, hjust = .5))+
-  theme(legend.position = "none")
+  theme(legend.position = "none", plot.background = element_rect(fill=rgb('0.96','0.94','0.86','0.5')))
 
 symcomp_plot2
 #####
 # Assemble Figure Panel
 # code to assemble figure
-right_corner <- plot_grid(cumsum_plot, symcomp_plot2, nrow = 2)
+right_corner <- plot_grid(cumsum_plot, symcomp_plot2, nrow = 2, align = 'v')
 right_corner
-bottom_row <- plot_grid(symflu_plot3,right_corner, ncol=2, axis = 'bt')
+bottom_row <- plot_grid(symflu_plot3,right_corner, ncol=2)
 bottom_row
 plot_grid(symflu_plot1, bottom_row, nrow=2, rel_heights = c(1,1.5))
 
-ggsave("FluCov_12.jpg",
+ggsave("FluCov_13.jpg",
+       units = "cm",
+       dpi = 320)
+
+ggsave("Fig1D.jpg",
        units = "cm",
        dpi = 320)
 #####
